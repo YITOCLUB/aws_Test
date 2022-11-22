@@ -11,7 +11,7 @@ public partial class Query
     public string GetRequestId(
         string? prefix)
     {
-        Utils.DebOut($"--GetRequestId--{prefix}");
+        Utils.DebOut($"--■GetRequestId--{prefix}");
         return Utils.GetRequestId($"##{prefix}");
     }
 }
