@@ -197,7 +197,7 @@ query request_id($prefix: String) {
 
 
 
-tail -f ./L20221121.txt
+tail -f /work/log/L20221122.txt
 */
 
 

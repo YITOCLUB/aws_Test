@@ -51,7 +51,11 @@ public class Utils
         var attr_GraphQLDescription = (mb.GetCustomAttribute<GraphQLDescriptionAttribute>())!.Description;
         return $"Query{sMethodName}【{httpRequest.Path} {attr_GraphQLName}({attr_GraphQLDescription}】";
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="prefix"></param>
+    /// <returns></returns>
     public static string GetRequestId(
         string? prefix)
     {
