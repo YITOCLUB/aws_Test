@@ -16,7 +16,9 @@ phases:
       ##02- $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
       ####/codebuild/output/tmp/script.sh: 4: aws: not found
 
-      - aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION}
+      ##03 https://ijianhuang.wordpress.com/2021/09/18/fixed-a-strange-error-script-sh-4-login-not-found-in-aws-codebuild/
+
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 234944522256.dkr.ecr.us-east-1.amazonaws.com
 
   build:
     commands:
