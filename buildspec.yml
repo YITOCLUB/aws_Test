@@ -23,7 +23,9 @@ phases:
 
       ##03 https://ijianhuang.wordpress.com/2021/09/18/fixed-a-strange-error-script-sh-4-login-not-found-in-aws-codebuild/
 
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 234944522256.dkr.ecr.ap-northeast-1.amazonaws.com
+      ##04 OKKK
+      ###- aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 234944522256.dkr.ecr.ap-northeast-1.amazonaws.com
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
     commands:
