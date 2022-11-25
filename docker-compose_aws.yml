@@ -1,16 +1,13 @@
-﻿## docker-compose_aws-02
+﻿## docker-compose_aws-03
 
 version: '3.4'
 
 services:
-  testa:
-    image: ${DOCKER_REGISTRY-}testa
+  build_foobar:
+    image: testa
     build:
-      context: .
+      context: ./
       dockerfile: TestA/Dockerfile
-    ports:
-      - "80:80"
-      ##- "5903:443"
     environment:
       TZ: Asia/Tokyo
       LANG: ja_JP.UTF-8

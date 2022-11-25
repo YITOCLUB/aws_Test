@@ -32,11 +32,11 @@ phases:
     commands:
       - echo "◆YI　Dockerイメージのビルドーーーーーーーーーーーーーー" Building the Docker image...    
       - echo Build started on `date`
-      - echo "◆head -1 yml :" `head -1 ./docker-compose_aws.yml`
+      - echo "◆ls -1 yml :" `ls -1 ./docker-compose_aws.yml`
       - echo "◆docker -v :" `docker -v`
       - echo "docker-compose -v :" `docker-compose -v`
       ###- docker-compose -f ./docker-compose.yml build --no-cache webapp
-      - docker-compose -f ./docker-compose_aws.yml build --no-cache webapp
+      - docker-compose -f ./docker-compose_aws.yml build --no-cache 
       - docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}      
   post_build:
     commands:
