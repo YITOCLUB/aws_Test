@@ -10,6 +10,7 @@ phases:
 
   pre_build:
     commands:
+      - echo "◆YI　Dockerイメージのビルド前ーーーーーーーーーーーーーー"   
       - echo 00000YITO Logging in to Amazon ECR...
       ##mod20221124
       ###- $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
@@ -29,12 +30,15 @@ phases:
 
   build:
     commands:
+      - echo "◆YI　Dockerイメージのビルドーーーーーーーーーーーーーー" Building the Docker image...    
       - echo Build started on `date`
-      - echo "◆◆◆YITO" Building the Docker image...          
+      - echo "◆" `head -1 ./docker-compose_aws.yml`
+      ###- docker-compose -f ./docker-compose.yml build --no-cache webapp
       - docker-compose -f ./docker-compose.yml build --no-cache webapp
       - docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}      
   post_build:
     commands:
+      - echo "◆YI　Dockerイメージのビルド後ーーーーーーーーーーーーーー"   
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
