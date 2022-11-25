@@ -30,7 +30,7 @@ phases:
 
   build:
     commands:
-      - echo "●●●YI　Dockerイメージのビルドーーーーーーーーーーーーーー" Building the Docker image...    
+      - echo "●●●YI　DockerイメージのビルドーーーーーーーーーーIMAGE_REPO_NAME：" $IMAGE_REPO_NAME  
       - echo Build started on `date`
       - echo "□□□□ls -l yml :" `ls -l ./docker-compose_aws.yml`
       - echo "□□□□docker -v :" `docker -v`
@@ -42,7 +42,7 @@ phases:
       ###- docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
 
 
-      - docker tag testa:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/ctesta:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       ###ない？- echo "□□□□docker image ls :" `docker image ls`
       - echo "□□▲▲docker images :" `docker images`
   post_build:
@@ -50,7 +50,7 @@ phases:
       - echo "●●●YI　Dockerイメージのビルド後ーーーーーーーーーーーーーー"   
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       
 
 
