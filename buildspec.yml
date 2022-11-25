@@ -15,9 +15,19 @@ phases:
 
       # 環境変数の設定
       #$$$$- AWS_ACCOUNT_ID=12346789012
+
       - ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-      - REPOSITORY_URI=$ECR_URI/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - CONTAINER_NAME=demo-container
+      ##$$- REPOSITORY_URI=$ECR_URI/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - REPOSITORY_URI=$ECR_URI/$IMAGE_REPO_NAME
+
+      - CONTAINER_NAME=container-testa001
+
+       # コミットハッシュの先頭7桁をタグに利用する
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+      - echo "□□□□IMAGE_TAG :" ${IMAGE_TAG}
+
 
       ##mod20221124
       ###- $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
@@ -48,7 +58,11 @@ phases:
       - echo "□□□□docker -v :" `docker -v`
       - echo "□□□□docker-compose -v :" `docker-compose -v`
       ###- docker-compose -f ./docker-compose.yml build --no-cache webapp
+
+      ##$$$- docker-compose -f ./docker-compose_aws.yml build --no-cache
+
       - docker-compose -f ./docker-compose_aws.yml build --no-cache
+
       - echo "□□□□docker images :" `docker images`
       
       ###- docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
@@ -56,9 +70,12 @@ phases:
 
       ##$$- docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI
+      ##$$- docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+      
       ###ない？- echo "□□□□docker image ls :" `docker image ls`
       - echo "□□▲▲docker images :" `docker images`
+
   post_build:
     commands:
       - echo "●●●YI　Dockerイメージのビルド後ーーーーーーーーーーーーーー"   
@@ -66,8 +83,12 @@ phases:
       - echo Pushing the Docker image...
 
       #$$- docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - docker push $REPOSITORY_URI
+      ##$$- docker push $REPOSITORY_URI
       
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
 
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
-      
+      - echo "□□□□ls -l imagedefinitions.json :" `ls -l ./imagedefinitions.json`
