@@ -10,7 +10,7 @@ phases:
 
   pre_build:
     commands:
-      - echo "◆YI　Dockerイメージのビルド前ーーーーーーーーーーーーーー"   
+      - echo "●●●YI　Dockerイメージのビルド前ーーーーーーーーーーーーーー"   
       - echo 00000YITO Logging in to Amazon ECR...
       ##mod20221124
       ###- $(aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION})
@@ -30,17 +30,19 @@ phases:
 
   build:
     commands:
-      - echo "◆YI　Dockerイメージのビルドーーーーーーーーーーーーーー" Building the Docker image...    
+      - echo "●●●YI　Dockerイメージのビルドーーーーーーーーーーーーーー" Building the Docker image...    
       - echo Build started on `date`
-      - echo "◆ls -1 yml :" `ls -1 ./docker-compose_aws.yml`
-      - echo "◆docker -v :" `docker -v`
-      - echo "docker-compose -v :" `docker-compose -v`
+      - echo "□□□□ls -l yml :" `ls -l ./docker-compose_aws.yml`
+      - echo "□□□□docker -v :" `docker -v`
+      - echo "□□□□docker-compose -v :" `docker-compose -v`
       ###- docker-compose -f ./docker-compose.yml build --no-cache webapp
-      - docker-compose -f ./docker-compose_aws.yml build --no-cache 
+      - docker-compose -f ./docker-compose_aws.yml build --no-cache
+      - echo "□□□□ddocker images :" `docker images`
+      
       - docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}      
   post_build:
     commands:
-      - echo "◆YI　Dockerイメージのビルド後ーーーーーーーーーーーーーー"   
+      - echo "●●●YI　Dockerイメージのビルド後ーーーーーーーーーーーーーー"   
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
