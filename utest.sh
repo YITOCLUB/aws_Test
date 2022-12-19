@@ -1,6 +1,6 @@
 #!/bin/bash
 ##MMMMMMMM
-###1219f01
+##1111111111--00001
 rm -f -r ./utestresults ./coveragereport
 dotnet test ./TestA.Tests/TestA.Tests.csproj --logger trx --results-directory ./utestresults  --collect:"XPlat Code Coverage"
 if [ $? -ne 0 ]; then
